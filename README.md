@@ -5,16 +5,9 @@ first-and-last
 
 This library provides data types `First' n` and `Last' n` generalizing `First` and `Last` from [`Data.Monoid`](https://hackage.haskell.org/package/base/docs/Data-Monoid.html) to return up to `n` values.
 
-```
-Data.Monoid.First    a ≡
-            First' 1 a ≡
-            First    a
-```
-
-```
-Data.Monoid.Last    a ≡
-            Last' 1 a ≡
-            Last    a
+```hs
+getFirst' (foldMap pure [1, 2, 3, 4] :: First' 2 Int) ≡ [1, 2]
+getLast'  (foldMap pure [1, 2, 3, 4] :: Last'  2 Int) ≡ [3, 4]
 ```
 
 It also provides API-compatible type synonyms `First` and `Last` as well as functions `getFirst` and `getLast`, allowing you to use it as a drop-in replacement.
@@ -25,7 +18,7 @@ Install
 Install using
 
 ```
-$ cabal install first-and-left
+$ cabal install first-and-last
 ```
 
 Documentation soon to be available on Hackage. For now, see [markandrus.github.io/first-and-last](http://markandrus.github.io/first-and-last).

@@ -17,7 +17,7 @@ This library provides data types [`First' n`](https://markandrus.github.io/first
 
 It also provides API-compatible type synonyms [`First`](https://markandrus.github.io/first-and-last/Data-Monoid-First.html#t:First) and [`Last`](https://markandrus.github.io/first-and-last/Data-Monoid-Last.html#t:Last) as well as functions [`getFirst`](https://markandrus.github.io/first-and-last/Data-Monoid-First.html#v:getFirst) and [`getLast`](https://markandrus.github.io/first-and-last/Data-Monoid-Last.html#v:getLast), allowing you to use it as a drop-in replacement.
 
-Documentation available on [Hackage](#). For HEAD, see [markandrus.github.io/first-and-last](https://markandrus.github.io/first-and-last).
+Documentation available on [Hackage](https://hackage.haskell.org/package/first-and-last). For HEAD, see [markandrus.github.io/first-and-last](https://markandrus.github.io/first-and-last).
 
 Install
 -------
@@ -25,7 +25,7 @@ Install
 Install using
 
 ```
-$ cabal install first-and-last
+cabal install first-and-last
 ```
 
 Contributing

@@ -43,7 +43,7 @@ import Data.Proxy (Proxy(Proxy))
 import Data.String (IsString(fromString))
 import GHC.Generics (Generic, Generic1)
 import GHC.TypeLits (KnownNat, Nat, natVal)
-import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Int, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, drop, error)
+import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Int, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, drop, error, head)
 
 --------------------------------------------------------------------------------
 -- * Last
@@ -53,10 +53,15 @@ import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Int, Maybe(Just, N
 type Last a = Last' 1 a
 
 -- | Get the last value of type @a@, if any.
+--
+-- >>> getLast (foldMap pure [])
+-- Nothing
+--
+-- >>> getLast (foldMap pure [1,2,3,4])
+-- Just 4
 getLast :: Last a -> Maybe a
 getLast (Last' []) = Nothing
-getLast (Last' [a]) = Just a
-getLast _ = error "impossible!"
+getLast (Last' as) = Just . head $ takeR 1 as
 
 --------------------------------------------------------------------------------
 -- * Last'
@@ -78,6 +83,15 @@ newtype Last' (n :: Nat) a = Last' { _getLast' :: [a] } deriving
   )
 
 -- | Get the last @n@ values or fewer of type @a@.
+--
+-- >>> getLast' (foldMap pure [1,2,3,4] :: Last' 0 Int)
+-- []
+--
+-- >>> getLast' (foldMap pure [1,2,3,4] :: Last' 1 Int)
+-- [4]
+--
+-- >>> getLast' (foldMap pure [1,2,3,4] :: Last' 2 Int)
+-- [3,4]
 getLast' :: Last' n a -> [a]
 getLast' = _getLast'
 

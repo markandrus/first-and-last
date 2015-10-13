@@ -6,8 +6,13 @@ first-and-last
 This library provides data types [`First' n`](https://markandrus.github.io/first-and-last/Data-Monoid-First.html#t:First-39-) and [`Last' n`](https://markandrus.github.io/first-and-last/Data-Monoid-Last.html#t:Last-39-) generalizing `First` and `Last` from [`Data.Monoid`](https://hackage.haskell.org/package/base/docs/Data-Monoid.html) to return up to `n` values.
 
 ```hs
-getFirst' (foldMap pure [1, 2, 3, 4] :: First' 2 Int) ≡ [1, 2]
-getLast'  (foldMap pure [1, 2, 3, 4] :: Last'  2 Int) ≡ [3, 4]
+>>> getFirst' (foldMap pure [1,2,3,4] :: First' 2 Int)
+[1,2]
+```
+
+```hs
+>>> getLast' (foldMap pure [1,2,3,4] :: Last' 2 Int)
+[3,4]
 ```
 
 It also provides API-compatible type synonyms [`First`](https://markandrus.github.io/first-and-last/Data-Monoid-First.html#t:First) and [`Last`](https://markandrus.github.io/first-and-last/Data-Monoid-Last.html#t:Last) as well as functions [`getFirst`](https://markandrus.github.io/first-and-last/Data-Monoid-First.html#v:getFirst) and [`getLast`](https://markandrus.github.io/first-and-last/Data-Monoid-Last.html#v:getLast), allowing you to use it as a drop-in replacement.

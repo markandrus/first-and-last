@@ -43,7 +43,7 @@ import Data.Proxy (Proxy(Proxy))
 import Data.String (IsString(fromString))
 import GHC.Generics (Generic, Generic1)
 import GHC.TypeLits (KnownNat, Nat, natVal)
-import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, error, take)
+import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, head, take)
 
 --------------------------------------------------------------------------------
 -- * First
@@ -53,10 +53,15 @@ import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Maybe(Just, Nothin
 type First a = First' 1 a
 
 -- | Get the first value of type @a@, if any.
+--
+-- >>> getFirst (foldMap pure [])
+-- Nothing
+--
+-- >>> getFirst (foldMap pure [1,2,3,4])
+-- Just 1
 getFirst :: First a -> Maybe a
 getFirst (First' []) = Nothing
-getFirst (First' [a]) = Just a
-getFirst _ = error "impossible!"
+getFirst (First' as) = Just . head $ take 1 as
 
 --------------------------------------------------------------------------------
 -- * First'
@@ -77,7 +82,16 @@ newtype First' (n :: Nat) a = First' { _getFirst' :: [a] } deriving
   , Traversable
   )
 
--- | Get up to @n@ of the first values of type @a@.
+-- | Get the first @n@ values or fewer of type @a@.
+--
+-- >>> getFirst' (foldMap pure [1,2,3,4] :: First' 0 Int)
+-- []
+--
+-- >>> getFirst' (foldMap pure [1,2,3,4] :: First' 1 Int)
+-- [1]
+--
+-- >>> getFirst' (foldMap pure [1,2,3,4] :: First' 2 Int)
+-- [1,2]
 getFirst' :: First' n a -> [a]
 getFirst' = _getFirst'
 

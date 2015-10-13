@@ -1,6 +1,6 @@
 name:                first-and-last
 version:             0.1.0.0
-synopsis:            First and Last generalized to return up to N values
+synopsis:            First and Last generalized to return up to n values
 description:
   This library provides data types @<Data-Monoid-First.html#t:First-39- First' n>@ and @<Data-Monoid-Last.html#t:Last-39- Last' n>@ generalizing @First@ and @Last@ from @<https://hackage.haskell.org/package/base/docs/Data-Monoid.html Data.Monoid>@ to return up to @n@ values.
   .
@@ -17,6 +17,10 @@ copyright:           Copyright (C) 2015 Mark Andrus Roberts
 category:            Data
 build-type:          Simple
 cabal-version:       >=1.10
+
+source-repository head
+  type: git
+  location: https://github.com/markandrus/first-and-last
 
 library
   exposed-modules:     Data.Monoid.First,

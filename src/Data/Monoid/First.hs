@@ -45,6 +45,9 @@ import GHC.Generics (Generic, Generic1)
 import GHC.TypeLits (KnownNat, Nat, natVal)
 import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, head, take)
 
+-- $setup
+-- >>> import Prelude
+
 --------------------------------------------------------------------------------
 -- * First
 --------------------------------------------------------------------------------

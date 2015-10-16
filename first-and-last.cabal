@@ -1,5 +1,5 @@
 name:                first-and-last
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            First and Last generalized to return up to n values
 description:
   This library provides data types @<Data-Monoid-First.html#t:First-39- First' n>@ and @<Data-Monoid-Last.html#t:Last-39- Last' n>@ generalizing @First@ and @Last@ from @<https://hackage.haskell.org/package/base/docs/Data-Monoid.html Data.Monoid>@ to return up to @n@ values.
@@ -33,11 +33,11 @@ library
   default-language:    Haskell2010
   ghc-options:         -Wall
 
-test-suite Golden
-  type:                detailed-0.9
-  test-module:         Golden
+test-suite doctests
+  main-is:             doctests.hs
+  type:                exitcode-stdio-1.0
   build-depends:       base >=4.8 && <4.9,
-                       Cabal >=1.22.4,
+                       doctest ==0.10.1,
                        first-and-last
   hs-source-dirs:      test
   default-language:    Haskell2010

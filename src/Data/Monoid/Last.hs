@@ -7,6 +7,7 @@
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ViewPatterns #-}
 -------------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Monoid.Last
@@ -43,7 +44,7 @@ import Data.Proxy (Proxy(Proxy))
 import Data.String (IsString(fromString))
 import GHC.Generics (Generic, Generic1)
 import GHC.TypeLits (KnownNat, Nat, natVal)
-import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Int, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, drop, error, head)
+import Prelude (($), (.), Char, Eq((==)), Foldable(foldr), Functor, Int, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, drop, error, head)
 
 -- $setup
 -- >>> import Prelude
@@ -63,8 +64,8 @@ type Last a = Last' 1 a
 -- >>> getLast (foldMap pure [1,2,3,4])
 -- Just 4
 getLast :: Last a -> Maybe a
-getLast (Last' []) = Nothing
-getLast (Last' as) = Just . head $ takeR 1 as
+getLast (getLast' -> []) = Nothing
+getLast (getLast' -> as) = Just . head $ takeR 1 as
 
 --------------------------------------------------------------------------------
 -- * Last'
@@ -100,9 +101,9 @@ getLast' = _getLast'
 
 instance KnownNat n => Applicative (Last' n) where
   Last' l <*> Last' r = Last' $ l <*> r
-  pure a = case natVal (Proxy :: Proxy n) of
-    0 -> mempty
-    _ -> Last' $ pure a
+  pure a =
+    let n = natVal (Proxy :: Proxy n)
+    in  Last' $ if n == 0 then mempty else pure a
 
 instance KnownNat n => Monoid (Last' n a) where
   Last' l `mappend` Last' r =

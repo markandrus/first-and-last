@@ -7,6 +7,7 @@
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ViewPatterns #-}
 -------------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Monoid.First
@@ -43,7 +44,7 @@ import Data.Proxy (Proxy(Proxy))
 import Data.String (IsString(fromString))
 import GHC.Generics (Generic, Generic1)
 import GHC.TypeLits (KnownNat, Nat, natVal)
-import Prelude (($), (.), Char, Eq, Foldable(foldr), Functor, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, head, take)
+import Prelude (($), (.), Char, Eq((==)), Foldable(foldr), Functor, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, head, take)
 
 -- $setup
 -- >>> import Prelude
@@ -63,8 +64,8 @@ type First a = First' 1 a
 -- >>> getFirst (foldMap pure [1,2,3,4])
 -- Just 1
 getFirst :: First a -> Maybe a
-getFirst (First' []) = Nothing
-getFirst (First' as) = Just . head $ take 1 as
+getFirst (getFirst' -> []) = Nothing
+getFirst (getFirst' -> as) = Just . head $ take 1 as
 
 --------------------------------------------------------------------------------
 -- * First'
@@ -100,9 +101,9 @@ getFirst' = _getFirst'
 
 instance KnownNat n => Applicative (First' n) where
   First' l <*> First' r = First' $ l <*> r
-  pure a = case natVal (Proxy :: Proxy n) of
-    0 -> mempty
-    _ -> First' $ pure a
+  pure a =
+    let n = natVal (Proxy :: Proxy n)
+    in  First' $ if n == 0 then mempty else pure a
 
 instance KnownNat n => Monoid (First' n a) where
   First' l `mappend` First' r =

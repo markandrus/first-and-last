@@ -7,6 +7,7 @@
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE ViewPatterns #-}
 -------------------------------------------------------------------------------
 -- |
@@ -42,6 +43,7 @@ import Control.Applicative (Applicative((<*>), pure), Alternative)
 import Data.Data (Data)
 import Data.Proxy (Proxy(Proxy))
 import Data.String (IsString(fromString))
+import GHC.Exts (IsList(Item, fromList, toList))
 import GHC.Generics (Generic, Generic1)
 import GHC.TypeLits (KnownNat, Nat, natVal)
 import Prelude (($), (.), Char, Eq((==)), Foldable(foldr), Functor, Int, Maybe(Just, Nothing), Monoid(mappend, mempty), Ord, Read, Show, Traversable, fromIntegral, drop, error, head)
@@ -119,5 +121,10 @@ takeR n l = go (drop n l) l
     go (_:xs) (_:ys) = go xs ys
     go (_:_) [] = error "impossible!"
 
+instance KnownNat n => IsList (Last' n a) where
+  type Item (Last' n a) = a
+  fromList = foldr (\c a -> pure c `mappend` a) mempty
+  toList = getLast'
+
 instance KnownNat n => IsString (Last' n Char) where
-  fromString = foldr (\c a -> pure c `mappend` a) mempty
+  fromString = fromList
